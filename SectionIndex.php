@@ -256,7 +256,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
                               &nbsp;
                               |
-                              <a href='#'>
+                              <a href='SectionEdit.php?id=$row["SectionID"]'>
                                 <i class='fa fa-edit blue'></i>
                               </a>
                               |
