@@ -41,12 +41,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     </nav>
     <!-- /.navbar -->
-
-    <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+ <!-- Main Sidebar Container -->
+ <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-      <a href="index3.html" class="brand-link">
-        <img src="Logos.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <a href="Index.php" class="brand-link">
+        <img src="Logos.png" alt=" Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">إدارة الشؤون الفنية</span>
       </a>
 
@@ -100,7 +99,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </li>
 
             <li class="nav-item">
-              <a href="pages/widgets.html" class="nav-link">
+              <a href="AssetIndex.php" class="nav-link">
                 <i class="nav-icon fa fa-th"></i>
                 <i class=""></i>
                 <p>
@@ -121,13 +120,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="UserCreate.php" class="nav-link">
                     <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
                     <p>مستخدم جديد</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="UserIndex.php" class="nav-link">
                     <i class="fa fa-circle-o nav-icon"></i>
                     <p>تعديل مستخدم</p>
                   </a>
@@ -151,40 +150,40 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="UpdateProfile.php" class="nav-link">
                     <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
                     <p> تحديث بياناتي </p>
                   </a>
                 </li>
 
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="ChangePassword.php" class="nav-link">
                     <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
                     <p> تغيير كلمة المرور </p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="CollegeIndex.php" class="nav-link">
                     <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
                     <p> الكليات </p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="SectionIndex.php" class="nav-link">
                     <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
                     <p> الاقسام </p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="OrderTypeIndex.php" class="nav-link">
                     <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
-                    <p> الطوابق </p>
+                    <p> انوع البلاغات </p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="AssetTypeIndex.php" class="nav-link">
                     <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
-                    <p> الغرف </p>
+                    <p> انوع الاصول </p>
                   </a>
                 </li>
 
@@ -205,9 +204,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="content-wrapper">
 
       <!-- <h4 style="display: inline"> كل </h4> -->
-      <a style="margin-right:30px" href="#" class="btn btn-success float-right">
+      <a style="margin-right:30px" href="OrderTypeCreate.php" class="btn btn-success float-right">
         <i class="fa fa-newspaper-o"></i>
-        إنشــاء OrderTypeName</a>
+        إنشــاء نوع البلاغ</a>
       <hr>
       <br>
 
@@ -221,33 +220,51 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <table class="table table-bordered" id="example1">
                     <thead>
                       <tr>
-                        <th scope="col">العنوان</th>
-                        <th scope="col">تاريخ الانشاء</th>
+                        <th scope="col">#</th>
+                        <th scope="col">نوع البلاغ </th>
                         <th scope="col">العمليات</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td></td>
-                        <td></td>
+                    <?php 
+                    include('connect.php');
+                    $sql = "select * from ordertypes ";
+                    $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                          // output data of each row
+                          while($row = $result->fetch_assoc()) {
+                            echo "<tr>
+                            <td>". $row["OrderTypeID"]."</td>
+                            <td>".$row["OrderTypeName"]."</td>
+                           
                        
-                        <td>
-                          <a href="#">
-                            <i class="fa fa-eye green"></i>
-                          </a>
+                            <td>
+                              <a href='#' >
+                                <i class='fa fa-eye green'></i>
+                              </a>
+    
+                              &nbsp;
+                              |
+                              <a href='OrderTypeEdit.php?id=$row[OrderTypeID]'>
+                                <i class='fa fa-edit blue'></i>
+                              </a>
+                              |
+                              <a href='#' class='delete-confirm'><i class='fa fa-trash red'></i>
+                              </a>
+                            </td>
+    
+                          </tr>";
 
-                          &nbsp;
-                          |
-                          <a href="#">
-                            <i class="fa fa-edit blue"></i>
-                          </a>
-                          |
-                          <a href="#" class="delete-confirm"><i class="fa fa-trash red"></i>
-                          </a>
-                        </td>
+                            
+                          }
+                        } else {
+                          
+                        }
 
-                      </tr>
-                      
+
+
+                      ?>
+
                     </tbody>
                   </table>
                 </div>
