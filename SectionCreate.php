@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -19,7 +20,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
   <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body{
       font-family: 'Tajawal' !important;
@@ -136,7 +137,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
           </li>
 
-          
+
+
 
 
           <li class="nav-item has-treeview ">
@@ -208,7 +210,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
           <div class="row">
              <div class="col-md-8  m-auto">
-             <form action="#" method="POST" enctype="multipart/form-data">
+             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data">
                 <div class="card">
                     <div class="card-body">
                        <div class="card">
@@ -219,7 +221,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                  <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="">القسم</label>
-                                        <input type="text" name="SectionName" id="" class="form-control">
+                                        <input type="text" name="SectionName" id="SectionName" class="form-control">
                                         <p class="red"></p>
                                     </div>
                                   
@@ -227,7 +229,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 
                                  <button type="submit" class="btn btn-success">
                                      <i class="fa fa-save"></i>
-                                    تعديل
+                                    حفظ
                                 </button>
                                  </div>
                              </div>
@@ -237,7 +239,41 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </form>
              </div>
           </div>
-    
+          <?php
+include('connect.php');
+
+ function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") 
+{
+  
+  $SectionName = test_input($_POST["SectionName"]);
+  $sql = "INSERT INTO `sections`(`SectionName`) VALUES ('$SectionName')";
+  if ($conn->query($sql) === TRUE) {
+    echo "<script>Swal.fire(
+      'تم الحفظ بنجاح',
+      '',
+      'success'
+    )</script>";
+  } else {
+    echo "<script>Swal.fire(
+      'لم يتم الحفظ,
+      '',
+      'error'
+    ) </script>";
+  }
+
+
+}
+
+
+      ?>
     
     
 
@@ -252,7 +288,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   </div>
   <!-- /.content-wrapper -->
 
-  
+
 
   <!-- Main Footer -->
   <footer class="main-footer">
@@ -271,3 +307,4 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="dist/js/adminlte.min.js"></script>
 </body>
 </html>
+

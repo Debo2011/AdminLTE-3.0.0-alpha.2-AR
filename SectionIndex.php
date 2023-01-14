@@ -32,6 +32,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <body class="hold-transition sidebar-mini" dir="rtl">
   <div class="wrapper">
 
+  
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
 
@@ -205,7 +206,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="content-wrapper">
 
       <!-- <h4 style="display: inline"> كل </h4> -->
-      <a style="margin-right:30px" href="#" class="btn btn-success float-right">
+      <a style="margin-right:30px" href="SectionCreate.php" class="btn btn-success float-right">
         <i class="fa fa-newspaper-o"></i>
         إنشــاء قسم</a>
       <hr>
@@ -218,35 +219,63 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <!-- /.card-header -->
               <div class="card-body">
                 <div class="table-responsive">
+
+
+
                   <table class="table table-bordered" id="example1">
+
                     <thead>
                       <tr>
-                        <th scope="col">العنوان</th>
-                        <th scope="col">تاريخ الانشاء</th>
+                        <th scope="col">#</th>
+                        <th scope="col">اسم القسم </th>
                         <th scope="col">العمليات</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                       
-                        <td>
-                          <a href="#">
-                            <i class="fa fa-eye green"></i>
-                          </a>
+                      <?php 
+                    include('connect.php');
+                    $sql = "select * from sections ";
+                    $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                          // output data of each row
+                          while($row = $result->fetch_assoc()) {
+                            echo "<tr>
+                            <td>". $row["SectionID"]."</td>
+                            <td>".$row["SectionName"]."</td>
+                           
+                            <td>
+                            <!-- Button trigger modal -->
+                            <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal'>
+                              Launch demo modal
+                            </button>
+                            </td>
+                            <td>
+                              <a href='#' data-toggle='modal' data-target='#modal-default'>
+                                <i class='fa fa-eye green'></i>
+                              </a>
+    
+                              &nbsp;
+                              |
+                              <a href='#'>
+                                <i class='fa fa-edit blue'></i>
+                              </a>
+                              |
+                              <a href='#' class='delete-confirm'><i class='fa fa-trash red'></i>
+                              </a>
+                            </td>
+    
+                          </tr>";
 
-                          &nbsp;
-                          |
-                          <a href="#">
-                            <i class="fa fa-edit blue"></i>
-                          </a>
-                          |
-                          <a href="#" class="delete-confirm"><i class="fa fa-trash red"></i>
-                          </a>
-                        </td>
+                            
+                          }
+                        } else {
+                          echo "0 results";
+                        }
 
-                      </tr>
+
+
+                      ?>
+                     
                       
                     </tbody>
                   </table>
@@ -254,17 +283,46 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </div>
             </div>
           </div>
+          
+
+    
+
         </div>
       </section>
 
       
       
-     
-
+  
     </div>
     <!-- /.content-wrapper -->
 
+                   
+    <!-- -->
 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+          <!-- -->
 
     <!-- Main Footer -->
     <footer class="main-footer">
