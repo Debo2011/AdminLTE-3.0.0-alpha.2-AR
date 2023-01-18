@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-
 <!--
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
-
 <?php
 session_start();//to start session
 //to destroy session variable
@@ -51,8 +49,8 @@ if (!isset($_SESSION["Username"])){
     </nav>
     <!-- /.navbar -->
 
-    <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+     <!-- Main Sidebar Container -->
+     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="Index.php" class="brand-link">
         <img src="Logos.png" alt=" Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -87,7 +85,7 @@ if (!isset($_SESSION["Username"])){
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="OrderCreate.php" class="nav-link">
+                  <a href="#" class="nav-link">
                     <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
                     <p>طلب جديد</p>
                   </a>
@@ -210,29 +208,14 @@ if (!isset($_SESSION["Username"])){
       <!-- /.sidebar -->
     </aside>
 
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-  
 
-
-<!-- include('connect.php');
-  $sql = "select * from Users ";
-  $result = $conn->query($sql);
-  if ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-      echo "id: " . $row["UserName"]. "<br>";
-    }
-  } else {
-    echo "0 results";
-  }  -->
-
-
-  
       <!-- <h4 style="display: inline"> كل </h4> -->
-    <!--   <a style="margin-right:30px" href="#" class="btn btn-success float-right">
+      <a style="margin-right:30px" href="OrderCreate.php" class="btn btn-success float-right">
         <i class="fa fa-newspaper-o"></i>
-        إنشــاء خبر</a>
+        إنشــاء طلب</a>
       <hr>
       <br>
 
@@ -240,50 +223,68 @@ if (!isset($_SESSION["Username"])){
         <div class="row">
           <div class="col-12">
             <div class="card">
-             
+              <!-- /.card-header -->
               <div class="card-body">
                 <div class="table-responsive">
                   <table class="table table-bordered" id="example1">
                     <thead>
                       <tr>
-                        <th scope="col">العنوان</th>
-                        <th scope="col">النص</th>
-                        <th scope="col">الصورة</th>
-                        <th scope="col">المنشي</th>
-                        <th scope="col">تاريخ الانشاء</th>
-                        <th scope="col">اخر تحديث</th>
+                      <th scope="col"># </th>
+                        <th scope="col"> نوع البلاغ </th>
+                        <th scope="col">  الموظف</th>
+                        <th scope="col">الوصف</th>
+                        <th scope="col">المهندس</th>
+                        <th scope="col">الحالة</th>
+                        <th scope="col">تاريخ الطلب</th>
                         <th scope="col">العمليات</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td>
+
+                    <?php 
+                    include('connect.php');
+                    $sql = "SELECT `OrderID`, ot.OrderTypeName, u.FullName, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
+                     `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID";
+                    $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                          // output data of each row
+                          while($row = $result->fetch_assoc()) {
+                            echo "<tr>
+                            <td>". $row["OrderID"]."</td>
+                            <td>".$row["OrderTypeName"]."</td>
+                            <td>".$row["FullName"]."</td>
+                            <td>".$row["Description"]."</td>
+                            <td>".$row["Engineer"]."</td>
+                            <td>".$row["OrderStatusName"]."</td>
+                            <td>".$row["RegisterDate"]."</td>
+                            <td>
+                              <a href='#' >
+                                <i class='fa fa-eye green'></i>
+                              </a>
+    
+                              &nbsp;
+                              |
+                              <a href='OrderEdit.php?id=$row[OrderID]'>
+                                <i class='fa fa-edit blue'></i>
+                              </a>
+                              |
+                              <a href='#' class='delete-confirm'><i class='fa fa-trash red'></i>
+                              </a>
+                            </td>
+    
+                          </tr>";
+
+                            
+                          }
+                        } else {
                           
-                        </td>
-                        <td>
-                          
+                        }
 
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                          <a href="#">
-                            <i class="fa fa-eye green"></i>
-                          </a>
 
-                          &nbsp;
-                          |
-                          <a href="#">
-                            <i class="fa fa-edit blue"></i>
-                          </a>
-                          |
-                          <a href="#" class="delete-confirm"><i class="fa fa-trash red"></i>
-                          </a>
-                        </td>
 
-                      </tr>
+                      ?>
+
+                   
                       
                     </tbody>
                   </table>
@@ -295,7 +296,7 @@ if (!isset($_SESSION["Username"])){
       </section>
 
       
-       -->
+      
      
 
     </div>
@@ -305,7 +306,7 @@ if (!isset($_SESSION["Username"])){
 
     <!-- Main Footer -->
     <footer class="main-footer">
-      <p> نظام إدارة الشؤون الفنية @2023</p>
+      <p> نظام إدارة الشؤون الفنية @ 2021</p>
     </footer>
   </div>
   <!-- ./wrapper -->

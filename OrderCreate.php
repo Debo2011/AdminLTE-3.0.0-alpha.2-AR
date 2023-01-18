@@ -89,7 +89,7 @@ if (!isset($_SESSION["Username"])){
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="OrderIndex.php" class="nav-link">
                     <i class="fa fa-circle-o nav-icon"></i>
                     <p>متابعة الطلبات</p>
                   </a>
@@ -347,50 +347,81 @@ if ($_FILES["attachments"]["size"] > 500000) {
  // echo "Sorry, your file is too large.";
   $uploadOk = 0;
 }
-echo "<script>Swal.fire(
-  '$imageFileType',
-  '',
-  'error'
-) </script>";
 
 // Allow certain file formats
-if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"  && $imageFileType !="pdf"
+if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" 
 && $imageFileType != "gif" ) {
-  echo "<script>Swal.fire(
-    'Sorry, only JPG, JPEG, PNG, pdf & GIF  files are allowed.',
+  /* echo "<script>Swal.fire(
+    'Sorry, only JPG, JPEG, PNG & GIF  files are allowed.',
     '',
     'error'
-  ) </script>";
+  ) </script>"; */
   //echo "Sorry, only JPG, JPEG, PNG, pdf & GIF  files are allowed.";
   $uploadOk = 0;
 }
 
 // Check if $uploadOk is set to 0 by an error
 if ($uploadOk == 0) {
-  echo "<script>Swal.fire(
+/*   echo "<script>Swal.fire(
     'Sorry, your file was not uploaded.',
     '',
     'error'
-  ) </script>";
+  ) </script>"; */
   //echo "Sorry, your file was not uploaded.";
 // if everything is ok, try to upload file
 } else {
   if (move_uploaded_file($_FILES["attachments"]["tmp_name"], $target_file)) {
-    echo "<script>Swal.fire(
+ /*    echo "<script>Swal.fire(
       'The file ". htmlspecialchars( basename( $_FILES["attachments"]["name"])). " has been uploaded.',
       '',
       'success'
-    )</script>";
+    )</script>"; */
    // echo "The file ". htmlspecialchars( basename( $_FILES["attachments"]["name"])). " has been uploaded.";
   } else {
-    echo "<script>Swal.fire(
+  /*   echo "<script>Swal.fire(
       'Sorry, there was an error uploading your file.',
       '',
       'error'
-    ) </script>";
+    ) </script>"; */
    // echo "Sorry, there was an error uploading your file.";
   }
 }
+
+  $OrderTypeID = test_input($_POST["OrderTypeID"]);
+  $descriptions = test_input($_POST["descriptions"]);
+  $datenow = date("Y/m/d");
+  $UserName = $_SESSION["Username"];
+  $attachments = htmlspecialchars( basename( $_FILES["attachments"]["name"]));
+  $sql = "INSERT INTO `orders`(`OrderTypeID`, `UserID`, `Description`, `StatusID`, `RegisterDate`) 
+  VALUES ('$OrderTypeID','$UserName','$descriptions',1,'$datenow')";
+  if ($conn->query($sql) === TRUE) {
+    $last_id = $conn->insert_id;
+
+    $sqlattachments = "INSERT INTO `attachments`( `attachmentName`, `attachmentURL`, `OrderID`, `UserID`) 
+    VALUES ('$attachments','$target_file','$last_id','$UserName')";
+  if ($conn->query($sqlattachments) === TRUE) {
+
+  }
+
+  $sqlDesc = "INSERT INTO `descriptions`( `DescriptionName`, `UserID`, `OrderID`) 
+  VALUES ('$descriptions',' $UserName','$last_id')";
+   if ($conn->query($sqlDesc) === TRUE) {
+
+   }
+    echo "<script>Swal.fire(
+      'تم الحفظ بنجاح',
+      '',
+      'success'
+    )</script>";
+  } else {
+    echo "<script>Swal.fire(
+      'لم يتم الحفظ,
+      '',
+      'error'
+    ) </script>";
+  } 
+
+
 
 
 }
