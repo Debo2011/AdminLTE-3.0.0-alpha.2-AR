@@ -1,8 +1,17 @@
 <!DOCTYPE html>
+
 <!--
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
+
+<?php
+session_start();//to start session
+//to destroy session variable
+if (!isset($_SESSION["Username"])){
+	header("location:login.php");
+}
+?>
 <html lang="en">
 
 <head>
@@ -78,7 +87,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="OrderCreate.php" class="nav-link">
                     <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
                     <p>طلب جديد</p>
                   </a>
@@ -203,10 +212,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-    <?php
+  
 
 
-	include('connect.php');
+<!-- include('connect.php');
   $sql = "select * from Users ";
   $result = $conn->query($sql);
   if ($result->num_rows > 0) {
@@ -216,10 +225,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     }
   } else {
     echo "0 results";
-  }
+  }  -->
 
 
-  ?>
+  
       <!-- <h4 style="display: inline"> كل </h4> -->
     <!--   <a style="margin-right:30px" href="#" class="btn btn-success float-right">
         <i class="fa fa-newspaper-o"></i>

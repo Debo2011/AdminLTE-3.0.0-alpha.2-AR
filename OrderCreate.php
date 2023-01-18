@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -82,7 +83,7 @@ if (!isset($_SESSION["Username"])){
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="OrderCreate.php" class="nav-link">
                     <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
                     <p>طلب جديد</p>
                   </a>
@@ -207,36 +208,94 @@ if (!isset($_SESSION["Username"])){
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-  <?php
+  <?php 
+                    include('connect.php');
+                    $sqlordertypes  = "select * from ordertypes ";
+                    $resultordertypes = $conn->query($sqlordertypes);
+
+
+                    ?>
+
+    <br>
+    
+          <div class="row">
+             <div class="col-md-8  m-auto">
+             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data">
+                <div class="card">
+                    <div class="card-body">
+                       <div class="card">
+                          <div class="card-header bg-info" > إضافة  </div>
+                             <div class="card-body">
+                                 <div class="row">
+    
+                                 <div class="col-md-6">
+                                 <label for=""> نوع الطلب </label>
+                                      <select name="OrderTypeID" id="OrderTypeID" class="form-control">
+                                        <option value="">إختر نوع الطلب</option>
+                                        <?php
+                                        if ($resultordertypes->num_rows > 0) {
+                                          while($row = $resultordertypes->fetch_assoc()) {
+                                        echo "<option value=".$row["OrderTypeID"].">".$row["OrderTypeName"] ."</option>";
+
+                                          }
+                                        }
+                                        ?>
+                            
+
+                          </select>
+                                    </div>
+                                  
+                          
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">المرفق</label>
+                                        <input type="file" name="attachments" accept="image/*,.pdf" id="attachments" class="form-control">
+                                        <p class="red"></p>
+                                    </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for=""> الوصف  </label>
+                                    <textarea type="text" name="descriptions" id="descriptions" class="form-control"></textarea>
+                                    <p class="red"></p>
+                                    </div>
+                                  </div>
+                            
+                                 </div>
+                                 <button type="submit" class="btn btn-success">
+                                     <i class="fa fa-save"></i>
+                                    حفظ
+                                </button>
+                                 </div>
+                             </div>
+                       </div>
+                    </div>
+                </div>
+            </form>
+             </div>
+          </div>
+          <?php
 include('connect.php');
-$id = $_GET["id"];
-$sql = "select * from colleges where  CollegeID = $id";
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-$CollegeID = $row['CollegeID'];
-$CollegeName = $row['CollegeName'];
-  }
 
-}
-
-
-?>
-
-<?php
-function test_input($data) {
+ function test_input($data) {
   $data = trim($data);
   $data = stripslashes($data);
   $data = htmlspecialchars($data);
   return $data;
 }
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
+  $target_dir = "uploads/";
+$target_file = $target_dir . basename($_FILES["attachments"]["name"]);
+$uploadOk = 1;
+$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-  $CollegeName = test_input($_POST["CollegeName"]);
-  $CollegeID = test_input($_POST["CollegeID"]);
-  $sql = "update colleges set CollegeName = '$CollegeName' where CollegeID = $CollegeID ";
+  
+  /* $OrderTypeID = test_input($_POST["OrderTypeID"]);
+  $SectionName = test_input($_POST["SectionName"]);
+  $SectionName = test_input($_POST["SectionName"]);
+  $sql = "INSERT INTO `sections`(`SectionName`) VALUES ('$SectionName')";
   if ($conn->query($sql) === TRUE) {
     echo "<script>Swal.fire(
       'تم الحفظ بنجاح',
@@ -249,46 +308,95 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
       '',
       'error'
     ) </script>";
+  } 
+}
+  */
+  $check = getimagesize($_FILES["attachments"]["tmp_name"]);
+  if($check !== false) {
+    echo "File is an image - " . $check["mime"] . ".";
+    $uploadOk = 1;
+  } else {
+    echo "<script>Swal.fire(
+      'File is not an image.',
+      '',
+      'error'
+    ) </script>";
+  //  echo "File is not an image.";
+    $uploadOk = 0;
   }
 
 
+// Check if file already exists
+if (file_exists($target_file)) {
+  echo "<script>Swal.fire(
+    'Sorry, file already exists.',
+    '',
+    'error'
+  ) </script>";
+ // echo "Sorry, file already exists.";
+  $uploadOk = 0;
 }
-?>
 
-    <br>
-    
-          <div class="row">
-             <div class="col-md-8  m-auto">
-             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data">
-                <div class="card">
-                    <div class="card-body">
-                       <div class="card">
-                          <div class="card-header bg-info" > تعديل الكلية  </div>
-                             <div class="card-body">
-                                 <div class="row">
-    
-                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for=""> الكلية</label>
-                                        <input type="text" name="CollegeName"  id="CollegeName" value="<?php echo $CollegeName?>"  class="form-control">
-                                        <p class="red"></p>
-                                    </div>
-                                    <input type="hidden" name="CollegeID" id="CollegeID" value="<?php echo $CollegeID?>" class="form-control">
-                                 </div>
-                                
-                                 <button type="submit" class="btn btn-success">
-                                     <i class="fa fa-save"></i>
-                                    تعديل
-                                </button>
-                                 </div>
-                             </div>
-                       </div>
-                    </div>
-                </div>
-            </form>
-             </div>
-          </div>
-    
+// Check file size
+if ($_FILES["attachments"]["size"] > 500000) {
+  echo "<script>Swal.fire(
+    'Sorry, your file is too large.',
+    '',
+    'error'
+  ) </script>";
+ // echo "Sorry, your file is too large.";
+  $uploadOk = 0;
+}
+echo "<script>Swal.fire(
+  '$imageFileType',
+  '',
+  'error'
+) </script>";
+
+// Allow certain file formats
+if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"  && $imageFileType !="pdf"
+&& $imageFileType != "gif" ) {
+  echo "<script>Swal.fire(
+    'Sorry, only JPG, JPEG, PNG, pdf & GIF  files are allowed.',
+    '',
+    'error'
+  ) </script>";
+  //echo "Sorry, only JPG, JPEG, PNG, pdf & GIF  files are allowed.";
+  $uploadOk = 0;
+}
+
+// Check if $uploadOk is set to 0 by an error
+if ($uploadOk == 0) {
+  echo "<script>Swal.fire(
+    'Sorry, your file was not uploaded.',
+    '',
+    'error'
+  ) </script>";
+  //echo "Sorry, your file was not uploaded.";
+// if everything is ok, try to upload file
+} else {
+  if (move_uploaded_file($_FILES["attachments"]["tmp_name"], $target_file)) {
+    echo "<script>Swal.fire(
+      'The file ". htmlspecialchars( basename( $_FILES["attachments"]["name"])). " has been uploaded.',
+      '',
+      'success'
+    )</script>";
+   // echo "The file ". htmlspecialchars( basename( $_FILES["attachments"]["name"])). " has been uploaded.";
+  } else {
+    echo "<script>Swal.fire(
+      'Sorry, there was an error uploading your file.',
+      '',
+      'error'
+    ) </script>";
+   // echo "Sorry, there was an error uploading your file.";
+  }
+}
+
+
+}
+
+
+      ?>
     
     
 
@@ -303,7 +411,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
   </div>
   <!-- /.content-wrapper -->
 
-  
+
 
   <!-- Main Footer -->
   <footer class="main-footer">
@@ -322,3 +430,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 <script src="dist/js/adminlte.min.js"></script>
 </body>
 </html>
+
