@@ -422,9 +422,54 @@ if (!isset($_SESSION["Username"])){
                     $sqlAssetTypes  = "select * from AssetTypes ";
                     $resultAssetTypes = $conn->query($sqlAssetTypes);
 
-
+                    $id = $_GET["id"];
+                    $sql = "SELECT `AssetID`, `AssetName`, assets.AssetTypeID, `AssetDec`, `UserID`, `RegisterDate` FROM `assets` LEFT OUTER JOIN assettypes ON assets.AssetTypeID = assettypes.AssetTypeID  WHERE AssetID  = $id";
+                    $result = $conn->query($sql);
+                   
+                      // output data of each row
+                    $row = $result->fetch_assoc();
+                    $AssetID = $row['AssetID'];
+                    $AssetName = $row['AssetName'];
+                    $AssetDec = $row['AssetDec'];
+                      
+                    
+                    
+                    
                     ?>
 
+<?php
+function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST") 
+{
+
+
+  $AssetTypeID = test_input($_POST["AssetTypeID"]);
+  $AssetName = test_input($_POST["AssetName"]);
+  $AssetDec = test_input($_POST["AssetDec"]);
+  $sql = "update assets set AssetTypeID = $AssetTypeID ,AssetName = '$AssetName' , AssetDec ='$AssetDec' where AssetID = $AssetID ";
+  if ($conn->query($sql) === TRUE) {
+    echo "<script>Swal.fire(
+      'تم الحفظ بنجاح',
+      '',
+      'success'
+    )</script>";
+    
+  } else {
+    echo "<script>Swal.fire(
+      'لم يتم الحفظ,
+      '',
+      'error'
+    ) </script>";
+  }
+
+
+}
+?>
       <br>
 
       <div class="row">
@@ -433,20 +478,20 @@ if (!isset($_SESSION["Username"])){
             <div class="card">
               <div class="card-body">
                 <div class="card">
-                  <div class="card-header bg-info"> إضافة </div>
+                  <div class="card-header bg-info"> تعديل </div>
                   <div class="card-body">
                     <div class="row">
 
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="">اسم الاصل</label>
-                          <input type="text" name="AssetName" id="" class="form-control">
+                          <input type="text" name="AssetName" id="AssetName" value="<?php echo $AssetName ?>" class="form-control">
                           <p class="red"></p>
                         </div>
                      
                         <div class="form-group">
                           <label for=""> وصف الاصل </label>
-                          <textarea type="text" name="AssetDec" id="AssetDec" class="form-control"></textarea>
+                          <textarea type="text" name="AssetDec" id="AssetDec"   class="form-control"><?php echo $AssetDec ?></textarea>
                           <p class="red"></p>
                         </div>
                         <label for=""> نوع الاصل </label>
@@ -463,10 +508,11 @@ if (!isset($_SESSION["Username"])){
                             
 
                           </select>
-                        
+                          </div>
+                    
 
                         </div>
-                      
+                        <br><br>
                       <button type="submit" class="btn btn-primary">
                         <i class="fa fa-save"></i>
                         حفـــظ

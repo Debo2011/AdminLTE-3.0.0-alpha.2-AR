@@ -417,14 +417,18 @@ if (!isset($_SESSION["Username"])){
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
   <?php 
-                    include('connect.php');
-                    $sqlOrders  = "SELECT `OrderID`, ot.OrderTypeName, u.FullName, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
-                    `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID WHERE OrderID = 1";
-                    $resultOrders = $conn->query($sqlOrders);
-                    $row = $resultOrders->fetch_assoc();
+                   include('connect.php');
+                   $id = $_GET["id"];
+                   $sqlOrders  = "SELECT `OrderID`, ot.OrderTypeName, u.FullName,c.CollegeName , u.Room,u.PhoneNo,u.floor, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
+                   `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID
+                   left OUTER JOIN colleges c on u.CollegeID = c.CollegeID
+                   WHERE OrderID = $id";
+                   $resultOrders = $conn->query($sqlOrders);
+                   $row = $resultOrders->fetch_assoc();
+                   $OrderID = $row['OrderID'];
+                   ?>
          
-                    ?>
-
+                    
     <br>
     
           <div class="row">
@@ -462,18 +466,31 @@ if (!isset($_SESSION["Username"])){
                                     </div>
                                     </div>
                                     <div class="col-md-6">
-                                
-                                <div class="form-group">
-                                  <label for=""> الحاله </label>
-                                      <input type="text" readonly="readonly" name="OrderStatusName" value="<?php echo $row["OrderStatusName"]; ?>" id="OrderStatusName" class="form-control">
+                                    <div class="form-group">
+                                  <label for=""> الكلية </label>
+                                      <input type="text" readonly="readonly" name="CollegeName" value="<?php echo $row["CollegeName"]; ?>" id="CollegeName" class="form-control">
                                       <p class="red"></p>
                                   </div>
                                   </div>
                               
                                     <div class="col-md-6">
                                     <div class="form-group">
-                                    <label for=""> الوصف  </label>
-                                    <textarea type="text" readonly="readonly"   name="descriptions"  id="descriptions" class="form-control"> <?php echo $row["Description"]; ?></textarea>
+                                    <label for=""> الطابق  </label>
+                                    <input type="text" readonly="readonly" name="floor" value="<?php echo $row["floor"]; ?>" id="floor" class="form-control">
+                                    <p class="red"></p>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for=""> الغرفة  </label>
+                                    <input type="text" readonly="readonly" name="Room" value="<?php echo $row["Room"]; ?>" id="Room" class="form-control">
+                                    <p class="red"></p>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for=""> الجوال  </label>
+                                    <input type="text" readonly="readonly" name="PhoneNo" value="<?php echo $row["PhoneNo"]; ?>" id="PhoneNo" class="form-control">
                                     <p class="red"></p>
                                     </div>
                                   </div>

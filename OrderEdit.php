@@ -420,8 +420,9 @@ if (!isset($_SESSION["Username"])){
              
              include('connect.php');
              $id = $_GET["id"];
-             $sqlOrders  = "SELECT `OrderID`, ot.OrderTypeName, u.FullName, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
-             `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID 
+             $sqlOrders  = "SELECT `OrderID`, ot.OrderTypeName, u.FullName,c.CollegeName , u.Room,u.PhoneNo,u.floor, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
+             `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID
+             left OUTER JOIN colleges c on u.CollegeID = c.CollegeID 
              WHERE OrderID = $id";
              $resultOrders = $conn->query($sqlOrders);
              $row = $resultOrders->fetch_assoc();
@@ -433,7 +434,7 @@ if (!isset($_SESSION["Username"])){
     
           <div class="row">
              <div class="col-md-8  m-auto">
-             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data">
+             <form action="#" method="POST" enctype="multipart/form-data">
                 <div class="card">
                     <div class="card-body">
                        <div class="card">
@@ -468,20 +469,35 @@ if (!isset($_SESSION["Username"])){
                                     <div class="col-md-6">
                                 
                                 <div class="form-group">
-                                  <label for=""> الحاله </label>
-                                      <input type="text" readonly="readonly" name="OrderStatusName" value="<?php echo $row["OrderStatusName"]; ?>" id="OrderStatusName" class="form-control">
+                                  <label for=""> الكلية </label>
+                                      <input type="text" readonly="readonly" name="CollegeName" value="<?php echo $row["CollegeName"]; ?>" id="CollegeName" class="form-control">
                                       <p class="red"></p>
                                   </div>
                                   </div>
                               
                                     <div class="col-md-6">
                                     <div class="form-group">
-                                    <label for=""> الوصف  </label>
-                                    <textarea type="text" readonly="readonly"   name="descriptions"  id="descriptions" class="form-control"> <?php echo $row["Description"]; ?></textarea>
+                                    <label for=""> الطابق  </label>
+                                    <input type="text" readonly="readonly" name="floor" value="<?php echo $row["floor"]; ?>" id="floor" class="form-control">
+                                    <p class="red"></p>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for=""> الغرفة  </label>
+                                    <input type="text" readonly="readonly" name="Room" value="<?php echo $row["Room"]; ?>" id="Room" class="form-control">
+                                    <p class="red"></p>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for=""> الجوال  </label>
+                                    <input type="text" readonly="readonly" name="PhoneNo" value="<?php echo $row["PhoneNo"]; ?>" id="PhoneNo" class="form-control">
                                     <p class="red"></p>
                                     </div>
                                   </div>
 </div>
+                             
                   <label for=""> الشروحات  </label>
                             <table class="table table-bordered" id="example1">
                     <thead>
@@ -496,7 +512,7 @@ if (!isset($_SESSION["Username"])){
                     include('connect.php');
                     $sql = "select DescriptionID,DescriptionName,u.FullName,OrderID from descriptions d
                     LEFT OUTER JOIN users u ON d.UserID =u.UserName
-                    where orderid= 1 ";
+                    where orderid= $id  ";
                     $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                           // output data of each row
@@ -535,7 +551,7 @@ if (!isset($_SESSION["Username"])){
                     include('connect.php');
                     $sql = "select AttachmentID,attachmentName,attachmentURL,u.FullName,OrderID from attachments A
                     LEFT OUTER JOIN users u ON A.UserID =u.UserName
-                    where orderid= 1 ";
+                    where orderid= $id  ";
                     $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                           // output data of each row
@@ -571,7 +587,7 @@ if (!isset($_SESSION["Username"])){
                       <div class="row">
                   <div class="col-md-6">
                     <?php     include('connect.php');
-                    $sqlorderstatues  = "select * from orderstatues where OrderStatusID != 1 or OrderStatusID != 2";
+                    $sqlorderstatues  = "select * from orderstatues where OrderStatusID = 3 or OrderStatusID = 4";
                     $resultorderstatues = $conn->query($sqlorderstatues);
 
 
@@ -596,7 +612,7 @@ if (!isset($_SESSION["Username"])){
                         
                                     <div class="col-md-12">
                                     <div class="form-group">
-                                    <label for=""> الوصف  </label>
+                                    <label for=""> الشرح  </label>
                                     <textarea type="text" name="descriptions" id="descriptions" class="form-control"></textarea>
                                     <p class="red"></p>
                                     </div>
@@ -633,7 +649,7 @@ include('connect.php');
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
-  $UserID = $_SESSION["Username"];
+  $UserID = test_input($_SESSION["Username"]);
   $OrderStatusID = test_input($_POST["OrderStatusID"]);
   $descriptions = test_input($_POST["descriptions"]);
   $sql = "update Orders set StatusID = $OrderStatusID , Description = '$descriptions'   where OrderID = $OrderID ";

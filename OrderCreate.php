@@ -598,7 +598,8 @@ if ($uploadOk == 0) {
   $OrderTypeID = test_input($_POST["OrderTypeID"]);
   $descriptions = test_input($_POST["descriptions"]);
   $datenow = date("Y/m/d");
-  $UserName = $_SESSION["Username"];
+
+  $UserName = test_input($_SESSION["Username"]);
   $attachments = htmlspecialchars( basename( $_FILES["attachments"]["name"]));
   $sql = "INSERT INTO `orders`(`OrderTypeID`, `UserID`, `Description`, `StatusID`, `RegisterDate`) 
   VALUES ('$OrderTypeID','$UserName','$descriptions',1,'$datenow')";

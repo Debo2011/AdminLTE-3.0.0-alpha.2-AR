@@ -478,7 +478,7 @@ if (!isset($_SESSION["Username"])){
                             <td>
                       
                           
-                              <a href='OrderEdit.php?id=$row[OrderID]'>
+                              <a href='OrderDetails.php?id=$row[OrderID]'>
                                 <i class='fa fa-edit blue'></i>
                               </a>
                               

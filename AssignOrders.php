@@ -421,19 +421,65 @@ if (!isset($_SESSION["Username"])){
   <?php 
                     include('connect.php');
                     $id = $_GET["id"];
-                    $sqlOrders  = "SELECT `OrderID`, ot.OrderTypeName, u.FullName, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
-                    `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID 
+                    $sqlOrders  = "SELECT `OrderID`, ot.OrderTypeName, u.FullName,c.CollegeName , u.Room,u.PhoneNo,u.floor, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
+                    `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID
+                    left OUTER JOIN colleges c on u.CollegeID = c.CollegeID
                     WHERE OrderID = $id";
                     $resultOrders = $conn->query($sqlOrders);
                     $row = $resultOrders->fetch_assoc();
                     $OrderID = $row['OrderID'];
                     ?>
+ <?php
+include('connect.php');
+
+ function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST") 
+{
+  $UserID = test_input($_SESSION["Username"]);
+  $UserName = test_input($_POST["UserName"]);
+  $descriptions = test_input($_POST["descriptions"]);
+  $sql = "update Orders set EngineerID = '$UserName' ,StatusID= 2, Description = '$descriptions'   where OrderID = $OrderID ";
+  if ($conn->query($sql) === TRUE) {
+
+    $sqlDesc = "INSERT INTO `descriptions`( `DescriptionName`, `UserID`, `OrderID`) 
+    VALUES ('$descriptions',' $UserID','$OrderID')";
+     if ($conn->query($sqlDesc) === TRUE) {
+  
+     }
+
+    echo "<script>Swal.fire(
+      'تم الحفظ بنجاح',
+      '',
+      'success'
+    )</script>";
+  } else {
+    echo "<script>Swal.fire(
+      'لم يتم الحفظ,
+      '',
+      'error'
+    ) </script>";
+  }
+
+
+}
+
+
+
+
+      ?>
+    
+    
 
     <br>
     
           <div class="row">
              <div class="col-md-8  m-auto">
-             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data">
+             <form action="#" method="POST" enctype="multipart/form-data">
                 <div class="card">
                     <div class="card-body">
                        <div class="card">
@@ -468,17 +514,31 @@ if (!isset($_SESSION["Username"])){
                                     </div>
                                     <div class="col-md-6">
                                 
-                                <div class="form-group">
-                                  <label for=""> الحاله </label>
-                                      <input type="text" readonly="readonly" name="OrderStatusName" value="<?php echo $row["OrderStatusName"]; ?>" id="OrderStatusName" class="form-control">
+                                    <div class="form-group">
+                                  <label for=""> الكلية </label>
+                                      <input type="text" readonly="readonly" name="CollegeName" value="<?php echo $row["CollegeName"]; ?>" id="CollegeName" class="form-control">
                                       <p class="red"></p>
                                   </div>
                                   </div>
                               
                                     <div class="col-md-6">
                                     <div class="form-group">
-                                    <label for=""> الوصف  </label>
-                                    <textarea type="text" readonly="readonly"   name="descriptions"  id="descriptions" class="form-control"> <?php echo $row["Description"]; ?></textarea>
+                                    <label for=""> الطابق  </label>
+                                    <input type="text" readonly="readonly" name="floor" value="<?php echo $row["floor"]; ?>" id="floor" class="form-control">
+                                    <p class="red"></p>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for=""> الغرفة  </label>
+                                    <input type="text" readonly="readonly" name="Room" value="<?php echo $row["Room"]; ?>" id="Room" class="form-control">
+                                    <p class="red"></p>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for=""> الجوال  </label>
+                                    <input type="text" readonly="readonly" name="PhoneNo" value="<?php echo $row["PhoneNo"]; ?>" id="PhoneNo" class="form-control">
                                     <p class="red"></p>
                                     </div>
                                   </div>
@@ -497,7 +557,7 @@ if (!isset($_SESSION["Username"])){
                     include('connect.php');
                     $sql = "select DescriptionID,DescriptionName,u.FullName,OrderID from descriptions d
                     LEFT OUTER JOIN users u ON d.UserID =u.UserName
-                    where orderid= 1 ";
+                    where orderid=  $id  ";
                     $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                           // output data of each row
@@ -536,7 +596,7 @@ if (!isset($_SESSION["Username"])){
                     include('connect.php');
                     $sql = "select AttachmentID,attachmentName,attachmentURL,u.FullName,OrderID from attachments A
                     LEFT OUTER JOIN users u ON A.UserID =u.UserName
-                    where orderid= 1 ";
+                    where orderid=  $id  ";
                     $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                           // output data of each row
@@ -598,7 +658,7 @@ if (!isset($_SESSION["Username"])){
                              
                                     <div class="col-md-12">
                                     <div class="form-group">
-                                    <label for=""> الوصف  </label>
+                                    <label for=""> الشرح  </label>
                                     <textarea type="text" name="descriptions" id="descriptions" class="form-control"></textarea>
                                     <p class="red"></p>
                                     </div>
@@ -624,51 +684,7 @@ if (!isset($_SESSION["Username"])){
             </form>
              </div>
           </div>
-          <?php
-include('connect.php');
-
- function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
-}
-if ($_SERVER["REQUEST_METHOD"] == "POST") 
-{
-  $UserID = $_SESSION["Username"];
-  $UserName = test_input($_POST["UserName"]);
-  $descriptions = test_input($_POST["descriptions"]);
-  $sql = "update Orders set EngineerID = '$UserName' ,StatusID= 2, Description = '$descriptions'   where OrderID = $OrderID ";
-  if ($conn->query($sql) === TRUE) {
-
-    $sqlDesc = "INSERT INTO `descriptions`( `DescriptionName`, `UserID`, `OrderID`) 
-    VALUES ('$descriptions',' $UserID','$OrderID')";
-     if ($conn->query($sqlDesc) === TRUE) {
-  
-     }
-
-    echo "<script>Swal.fire(
-      'تم الحفظ بنجاح',
-      '',
-      'success'
-    )</script>";
-  } else {
-    echo "<script>Swal.fire(
-      'لم يتم الحفظ,
-      '',
-      'error'
-    ) </script>";
-  }
-
-
-}
-
-
-
-
-      ?>
-    
-    
+          
 
     
     <script>
