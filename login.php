@@ -67,7 +67,11 @@ function test_input($data) {
 
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
         $_SESSION['Username']=$Username;
+        $_SESSION['FullName']=$row["FullName"];
+        $_SESSION['UserTypeID']=$row["UserTypeID"];
+        
         header('location:Index.php');
     }else{
 

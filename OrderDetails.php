@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -14,7 +15,6 @@ if (!isset($_SESSION["Username"])){
 }
 ?>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,27 +30,26 @@ if (!isset($_SESSION["Username"])){
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
   <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    body {
+    body{
       font-family: 'Tajawal' !important;
     }
   </style>
 
 </head>
-
 <body class="hold-transition sidebar-mini" dir="rtl">
-  <div class="wrapper">
+<div class="wrapper">
 
-    <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
+    
 
+    
 
-
-
-
-    </nav>
-    <!-- /.navbar -->
+    
+  </nav>
+  <!-- /.navbar -->
  <!-- Main Sidebar Container -->
  <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
@@ -415,66 +414,94 @@ if (!isset($_SESSION["Username"])){
       <!-- /.sidebar -->
     </aside>
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+  <?php 
+                    include('connect.php');
+                    $sqlOrders  = "SELECT `OrderID`, ot.OrderTypeName, u.FullName, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
+                    `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID WHERE OrderID = 1";
+                    $resultOrders = $conn->query($sqlOrders);
+                    $row = $resultOrders->fetch_assoc();
+         
+                    ?>
 
-      <!-- <h4 style="display: inline"> كل </h4> -->
-      <a style="margin-right:30px" href="UserCreate.php" class="btn btn-success float-right">
-        <i class="fa fa-newspaper-o"></i>
-        إنشــاء مستخدم</a>
-      <hr>
-      <br>
-
-      <section class="content">
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <!-- /.card-header -->
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-bordered" id="example1">
+    <br>
+    
+          <div class="row">
+             <div class="col-md-8  m-auto">
+             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data">
+                <div class="card">
+                    <div class="card-body">
+                       <div class="card">
+                          <div class="card-header bg-info" > تفاصيل  </div>
+                             <div class="card-body">
+                                 <div class="row">
+                                 <div class="col-md-6">
+                                
+                                <div class="form-group">
+                                  <label for=""> مقدم الطلب </label>
+                                      <input type="text" readonly="readonly" name="FullName" value="<?php echo $row["FullName"]; ?>" id="OrderTypeName" class="form-control">
+                                      <p class="red"></p>
+                                  </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                
+                                <div class="form-group">
+                                  <label for=""> التاريخ </label>
+                                      <input type="text" readonly="readonly" name="RegisterDate" value="<?php echo $row["RegisterDate"]; ?>" id="RegisterDate" class="form-control">
+                                      <p class="red"></p>
+                                  </div>
+                                  </div>
+                              
+                                 <div class="col-md-6">
+                                
+                                  <div class="form-group">
+                                    <label for=""> نوع الطلب </label>
+                                        <input type="text" readonly="readonly" name="OrderTypeName" value="<?php echo $row["OrderTypeName"]; ?>" id="OrderTypeName" class="form-control">
+                                        <p class="red"></p>
+                                    </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                
+                                <div class="form-group">
+                                  <label for=""> الحاله </label>
+                                      <input type="text" readonly="readonly" name="OrderStatusName" value="<?php echo $row["OrderStatusName"]; ?>" id="OrderStatusName" class="form-control">
+                                      <p class="red"></p>
+                                  </div>
+                                  </div>
+                              
+                                    <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for=""> الوصف  </label>
+                                    <textarea type="text" readonly="readonly"   name="descriptions"  id="descriptions" class="form-control"> <?php echo $row["Description"]; ?></textarea>
+                                    <p class="red"></p>
+                                    </div>
+                                  </div>
+</div>
+                  <label for=""> الشروحات  </label>
+                            <table class="table table-bordered" id="example1">
                     <thead>
                       <tr>
-                      <th scope="col">#</th>
-                        <th scope="col">إسم المستخدم</th>
-                        <th scope="col">الاسم كامل</th>
-                        <th scope="col">الكلية</th>
-                        <th scope="col">الطابق</th>
-                        <th scope="col">الغرفة</th>
-                        <th scope="col">رقم الجوال</th>
-                        <th scope="col">رقم الجوال </th>
-                        <th scope="col">نوع المستخدم</th>
-                        <th scope="col">البريد الالكتروني</th>
-                        <th scope="col">العمليات</th>
-                        
+                        <th scope="col">#</th>
+                        <th scope="col">الموظف </th>
+                        <th scope="col">الشرح</th>
                       </tr>
                     </thead>
                     <tbody>
                     <?php 
                     include('connect.php');
-                    $sql = "SELECT UserID,UserName,FullName,colleges.CollegeName, sections.SectionName ,floor,Room,PhoneNo,usertypes.UserTypeName,Email FROM users LEFT OUTER join colleges on users.CollegeID = colleges.CollegeID  LEFT OUTER join sections on users.SectionID = sections.SectionID LEFT OUTER join usertypes on users.UserTypeID = usertypes.UserTypeID ";
+                    $sql = "select DescriptionID,DescriptionName,u.FullName,OrderID from descriptions d
+                    LEFT OUTER JOIN users u ON d.UserID =u.UserName
+                    where orderid= 1 ";
                     $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                           // output data of each row
                           while($row = $result->fetch_assoc()) {
                             echo "<tr>
-                            <td>". $row["UserID"]."</td>
-                            <td>". $row["UserName"]."</td>
+                            <td>". $row["DescriptionID"]."</td>
                             <td>".$row["FullName"]."</td>
-                            <td>".$row["CollegeName"]."</td>
-                            <td>".$row["SectionName"]."</td>
-                            <td>".$row["floor"]."</td>
-                            <td>".$row["Room"]."</td>
-                            <td>".$row["PhoneNo"]."</td>
-                            <td>".$row["UserTypeName"]."</td>
-                            <td>".$row["Email"]."</td>
-                            <td>
-                             
-                              <a href='UserEdit.php?id=$row[UserID]'>
-                                <i class='fa fa-edit blue'></i>
-                              </a>
-                          
-                            </td>
+                            <td>".$row["DescriptionName"]."</td>
+                    
     
                           </tr>";
 
@@ -487,41 +514,104 @@ if (!isset($_SESSION["Username"])){
 
 
                       ?>
-                     
 
                     </tbody>
                   </table>
+                  <label for=""> المرفقات  </label>
+                            <table class="table table-bordered" id="example1">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">الموظف </th>
+                        <th scope="col">المرفق</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <?php 
+                    include('connect.php');
+                    $sql = "select AttachmentID,attachmentName,attachmentURL,u.FullName,OrderID from attachments A
+                    LEFT OUTER JOIN users u ON A.UserID =u.UserName
+                    where orderid= 1 ";
+                    $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                          // output data of each row
+                          while($row = $result->fetch_assoc()) {
+                            echo "<tr>
+                            <td>". $row["AttachmentID"]."</td>
+                            <td>".$row["FullName"]."</td>
+                            <td>".$row["attachmentName"]."</td>
+                    
+    
+                          </tr>";
+
+                            
+                          }
+                        } else {
+                          
+                        }
+
+
+
+                      ?>
+
+                    </tbody>
+                  </table>
+                  </div>
+                 
+          
+
+                               
+                                 </div>
+                             </div>
+                       </div>
+                    </div>
                 </div>
-              </div>
-            </div>
+            </form>
+             </div>
           </div>
-        </div>
-      </section>
+          <?php
+include('connect.php');
 
-      
-      
-     
+ function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
 
-    </div>
-    <!-- /.content-wrapper -->
 
+      ?>
+    
+    
 
+    
+    <script>
+     CKEDITOR.replace('bodyar');
+    CKEDITOR.replace('bodyen');
+    </script>
 
-    <!-- Main Footer -->
-    <footer class="main-footer">
-      <p> نظام إدارة الشؤون الفنية @ 2021</p>
-    </footer>
+    
+
   </div>
-  <!-- ./wrapper -->
+  <!-- /.content-wrapper -->
 
-  <!-- REQUIRED SCRIPTS -->
 
-  <!-- jQuery -->
-  <script src="plugins/jquery/jquery.min.js"></script>
-  <!-- Bootstrap 4 -->
-  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- AdminLTE App -->
-  <script src="dist/js/adminlte.min.js"></script>
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <p> نظام إدارة الشؤون الفنية @ 2021</p> 
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
 </body>
-
 </html>
+

@@ -8,6 +8,9 @@ session_start();//to start session
 //to destroy session variable
 if (!isset($_SESSION["Username"])){
 	header("location:login.php");
+}else{
+
+  $UserTypeID =  $_SESSION['UserTypeID'];
 }
 ?>
 <html lang="en">
@@ -64,143 +67,348 @@ if (!isset($_SESSION["Username"])){
             <img src="./dist/img/avatar04.png" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="#" class="d-block">مدير النظام </a>
+            <a href="#" class="d-block"><?php echo $_SESSION['FullName']; ?>  </a>
           </div>
         </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-            <li class="nav-item has-treeview menu-open">
-              <a href="#" class="nav-link active">
-                <i class="nav-icon fa fa-dashboard"></i>
-                <p>
-                  <i class="right fa fa-angle-left"></i>
-                  الطلبات
-
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
-                    <p>طلب جديد</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>متابعة الطلبات</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>توزيع الطلبات</p>
-                  </a>
-                </li>
-
-              </ul>
-            </li>
-
-            <li class="nav-item">
-              <a href="AssetIndex.php" class="nav-link">
-                <i class="nav-icon fa fa-th"></i>
-                <i class=""></i>
-                <p>
-                  تسجيل الاصول
-
-                </p>
-              </a>
-            </li>
-
-            <li class="nav-item has-treeview ">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-users"></i>
-                <p>
-                  <i class="right fa fa-angle-left"></i>
-                  إدارة المستخدمين
-
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="UserCreate.php" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
-                    <p>مستخدم جديد</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="UserIndex.php" class="nav-link">
-                    <i class="fa fa-circle-o nav-icon"></i>
-                    <p>تعديل مستخدم</p>
-                  </a>
-                </li>
-
-
-              </ul>
-            </li>
-
-
-
-
-            <li class="nav-item has-treeview ">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-users"></i>
-                <p>
-                  <i class="right fa fa-angle-left"></i>
-                  الاعدادات
-
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="UpdateProfile.php" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
-                    <p> تحديث بياناتي </p>
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a href="ChangePassword.php" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
-                    <p> تغيير كلمة المرور </p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="CollegeIndex.php" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
-                    <p> الكليات </p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="SectionIndex.php" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
-                    <p> الاقسام </p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="OrderTypeIndex.php" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
-                    <p> انوع البلاغات </p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="AssetTypeIndex.php" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon" style="color: green;"></i>
-                    <p> انوع الاصول </p>
-                  </a>
-                </li>
-
-
-
-              </ul>
-            </li>
-
-
-          </ul>
+        <?php 
+          
+          if ($UserTypeID==1 ){
+ 
+        
+          echo " <ul class='nav nav-pills nav-sidebar flex-column' data-widget='treeview' role='menu' data-accordion='false'>
+          <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+          <li class='nav-item has-treeview menu-open'>
+            <a href='#' class='nav-link active'>
+              <i class='nav-icon fa fa-dashboard'></i>
+              <p>
+                <i class='right fa fa-angle-left'></i>
+                الطلبات
+ 
+              </p>
+            </a>
+            <ul class='nav nav-treeview'>
+ 
+              <li class='nav-item'>
+                <a href='OrderCreate.php' class='nav-link'>
+                  <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+                  <p>طلب جديد</p>
+                </a>
+              </li>
+              <li class='nav-item'>
+                <a href='MyOrders.php' class='nav-link'>
+                  <i class='fa fa-circle-o nav-icon'></i>
+                  <p>طلباتي </p>
+                </a>
+              </li>
+              <li class='nav-item'>
+                <a href='OrderIndex.php' class='nav-link'>
+                  <i class='fa fa-circle-o nav-icon'></i>
+                  <p>الطلبات الجديدة</p>
+                </a>
+              </li>
+              <li class='nav-item'>
+                <a href='OrdersProcessing.php' class='nav-link'>
+                  <i class='fa fa-circle-o nav-icon'></i>
+                  <p>الطلبات المعالجة</p>
+                </a>
+              </li>
+              <li class='nav-item'>
+                <a href='OrdersInProcessing.php' class='nav-link'>
+                  <i class='fa fa-circle-o nav-icon'></i>
+                  <p> الطلبات قيد التنفيذ</p>
+                </a>
+              </li>
+              <li class='nav-item'>
+                <a href='OrdersRejected.php' class='nav-link'>
+                  <i class='fa fa-circle-o nav-icon'></i>
+                  <p> الطلبات المرفوضة </p>
+                </a>
+              </li>
+            </ul>
+          </li>
+ 
+          <li class='nav-item'>
+            <a href='AssetIndex.php' class='nav-link'>
+              <i class='nav-icon fa fa-th'></i>
+              <i class=''></i>
+              <p>
+                تسجيل الاصول
+ 
+              </p>
+            </a>
+          </li>
+ 
+          <li class='nav-item has-treeview '>
+            <a href='#' class='nav-link'>
+              <i class='nav-icon fa fa-users'></i>
+              <p>
+                <i class='right fa fa-angle-left'></i>
+                إدارة المستخدمين
+ 
+              </p>
+            </a>
+            <ul class='nav nav-treeview'>
+              <li class='nav-item'>
+                <a href='UserCreate.php' class='nav-link'>
+                  <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+                  <p>مستخدم جديد</p>
+                </a>
+              </li>
+              <li class='nav-item'>
+                <a href='UserIndex.php' class='nav-link'>
+                  <i class='fa fa-circle-o nav-icon'></i>
+                  <p>تعديل مستخدم</p>
+                </a>
+              </li>
+ 
+ 
+            </ul>
+          </li>
+          <li class='nav-item has-treeview '>
+            <a href='#' class='nav-link'>
+              <i class='nav-icon fa fa-users'></i>
+              <p>
+                <i class='right fa fa-angle-left'></i>
+                الاعدادات
+ 
+              </p>
+            </a>
+            <ul class='nav nav-treeview'>
+              <li class='nav-item'>
+                <a href='UpdateProfile.php' class='nav-link'>
+                  <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+                  <p> تحديث بياناتي </p>
+                </a>
+              </li>
+ 
+              <li class='nav-item'>
+                <a href='ChangePassword.php' class='nav-link'>
+                  <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+                  <p> تغيير كلمة المرور </p>
+                </a>
+              </li>
+              <li class='nav-item'>
+                <a href='CollegeIndex.php' class='nav-link'>
+                  <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+                  <p> الكليات </p>
+                </a>
+              </li>
+              <li class='nav-item'>
+                <a href='SectionIndex.php' class='nav-link'>
+                  <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+                  <p> الاقسام </p>
+                </a>
+              </li>
+              <li class='nav-item'>
+                <a href='OrderTypeIndex.php' class='nav-link'>
+                  <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+                  <p> انوع البلاغات </p>
+                </a>
+              </li>
+              <li class='nav-item'>
+                <a href='AssetTypeIndex.php' class='nav-link'>
+                  <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+                  <p> انوع الاصول </p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class='nav-item'>
+            <a href='logout.php' class='nav-link'>
+              <i class='nav-icon fa fa-th'></i>
+              <i class=''></i>
+              <p>
+                تسجيل خروج
+ 
+              </p>
+            </a>
+          </li>
+        </ul>
+ ";
+ } else if ($UserTypeID==2){
+ 
+ 
+   echo " <ul class='nav nav-pills nav-sidebar flex-column' data-widget='treeview' role='menu' data-accordion='false'>
+   <!-- Add icons to the links using the .nav-icon class
+      with font-awesome or any other icon font library -->
+   <li class='nav-item has-treeview menu-open'>
+     <a href='#' class='nav-link active'>
+       <i class='nav-icon fa fa-dashboard'></i>
+       <p>
+         <i class='right fa fa-angle-left'></i>
+         الطلبات
+ 
+       </p>
+     </a>
+     <ul class='nav nav-treeview'>
+ 
+       <li class='nav-item'>
+         <a href='OrderCreate.php' class='nav-link'>
+           <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+           <p>طلب جديد</p>
+         </a>
+       </li>
+       <li class='nav-item'>
+         <a href='MyOrders.php' class='nav-link'>
+           <i class='fa fa-circle-o nav-icon'></i>
+           <p>طلباتي </p>
+         </a>
+       </li>
+       <li class='nav-item'>
+         <a href='OrderIndex.php' class='nav-link'>
+           <i class='fa fa-circle-o nav-icon'></i>
+           <p>الطلبات الجديدة</p>
+         </a>
+       </li>
+       <li class='nav-item'>
+         <a href='OrdersProcessing.php' class='nav-link'>
+           <i class='fa fa-circle-o nav-icon'></i>
+           <p>الطلبات المعالجة</p>
+         </a>
+       </li>
+       <li class='nav-item'>
+         <a href='OrdersInProcessing.php' class='nav-link'>
+           <i class='fa fa-circle-o nav-icon'></i>
+           <p> الطلبات قيد التنفيذ</p>
+         </a>
+       </li>
+       <li class='nav-item'>
+         <a href='OrdersRejected.php' class='nav-link'>
+           <i class='fa fa-circle-o nav-icon'></i>
+           <p> الطلبات المرفوضة </p>
+         </a>
+       </li>
+     </ul>
+   </li>
+ 
+   <li class='nav-item'>
+     <a href='AssetIndex.php' class='nav-link'>
+       <i class='nav-icon fa fa-th'></i>
+       <i class=''></i>
+       <p>
+         تسجيل الاصول
+ 
+       </p>
+     </a>
+   </li>
+   <li class='nav-item has-treeview '>
+     <a href='#' class='nav-link'>
+       <i class='nav-icon fa fa-users'></i>
+       <p>
+         <i class='right fa fa-angle-left'></i>
+         الاعدادات
+ 
+       </p>
+     </a>
+     <ul class='nav nav-treeview'>
+       <li class='nav-item'>
+         <a href='UpdateProfile.php' class='nav-link'>
+           <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+           <p> تحديث بياناتي </p>
+         </a>
+       </li>
+ 
+       <li class='nav-item'>
+         <a href='ChangePassword.php' class='nav-link'>
+           <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+           <p> تغيير كلمة المرور </p>
+         </a>
+       </li>
+     </ul>
+   </li>
+   <li class='nav-item'>
+     <a href='logout.php' class='nav-link'>
+       <i class='nav-icon fa fa-th'></i>
+       <i class=''></i>
+       <p>
+         تسجيل خروج
+ 
+       </p>
+     </a>
+   </li>
+ </ul>
+ ";
+ 
+ }else if($UserTypeID==3){
+ 
+ 
+   echo " <ul class='nav nav-pills nav-sidebar flex-column' data-widget='treeview' role='menu' data-accordion='false'>
+   <!-- Add icons to the links using the .nav-icon class
+      with font-awesome or any other icon font library -->
+   <li class='nav-item has-treeview menu-open'>
+     <a href='#' class='nav-link active'>
+       <i class='nav-icon fa fa-dashboard'></i>
+       <p>
+         <i class='right fa fa-angle-left'></i>
+         الطلبات
+ 
+       </p>
+     </a>
+     <ul class='nav nav-treeview'>
+ 
+       <li class='nav-item'>
+         <a href='OrderCreate.php' class='nav-link'>
+           <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+           <p>طلب جديد</p>
+         </a>
+       </li>
+       <li class='nav-item'>
+         <a href='MyOrders.php' class='nav-link'>
+           <i class='fa fa-circle-o nav-icon'></i>
+           <p>طلباتي </p>
+         </a>
+       </li>
+     </ul>
+   </li>
+ 
+ 
+  
+   <li class='nav-item has-treeview '>
+     <a href='#' class='nav-link'>
+       <i class='nav-icon fa fa-users'></i>
+       <p>
+         <i class='right fa fa-angle-left'></i>
+         الاعدادات
+ 
+       </p>
+     </a>
+     <ul class='nav nav-treeview'>
+       <li class='nav-item'>
+         <a href='UpdateProfile.php' class='nav-link'>
+           <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+           <p> تحديث بياناتي </p>
+         </a>
+       </li>
+ 
+       <li class='nav-item'>
+         <a href='ChangePassword.php' class='nav-link'>
+           <i class='fa fa-check-circle nav-icon' style='color: green;'></i>
+           <p> تغيير كلمة المرور </p>
+         </a>
+       </li>
+     </ul>
+   </li>
+   <li class='nav-item'>
+     <a href='logout.php' class='nav-link'>
+       <i class='nav-icon fa fa-th'></i>
+       <i class=''></i>
+       <p>
+         تسجيل خروج
+ 
+       </p>
+     </a>
+   </li>
+ </ul>
+ ";
+ 
+ }
+          
+          ?>
+          
         </nav>
         <!-- /.sidebar-menu -->
       </div>
@@ -338,6 +546,11 @@ if (!isset($_SESSION["Username"])){
                           <p class="red"></p>
                         </div>
                        
+                        <div class="form-group">
+                          <label for="">  البريد الالكتروني </label>
+                          <input type="Email" name="Email" id="Email" class="form-control">
+                          <p class="red"></p>
+                        </div>
                       </div>
                       <button type="submit" class="btn btn-primary">
                         <i class="fa fa-save"></i>
@@ -377,9 +590,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
   $SectionID = test_input($_POST["SectionID"]);
   $Room = test_input($_POST["Room"]);
   $RePassword = test_input($_POST["RePassword"]);
+  $Email = test_input($_POST["Email"]);
 
-  $sql = "INSERT INTO `users`(`UserName`, `Password`, `FullName`, `CollegeID`, `SectionID`, `floor`, `Room`, `PhoneNo`, `UserTypeID`)
-   VALUES ('$UserName','$Password','$FullName','$CollegeID','$SectionID','$floor','$Room','$PhoneNo','$UserTypeID')";
+  $sql = "INSERT INTO `users`(`UserName`, `Password`, `FullName`, `CollegeID`, `SectionID`, `floor`, `Room`, `PhoneNo`, `UserTypeID`,`Email`)
+   VALUES ('$UserName','$Password','$FullName','$CollegeID','$SectionID','$floor','$Room','$PhoneNo','$UserTypeID','$Email')";
   if ($conn->query($sql) === TRUE) {
     echo "<script>Swal.fire(
       'تم الحفظ بنجاح',

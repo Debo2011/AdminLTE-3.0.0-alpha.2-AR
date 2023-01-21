@@ -251,18 +251,11 @@ if (!isset($_SESSION["Username"])){
                            
                        
                             <td>
-                              <a href='#' >
-                                <i class='fa fa-eye green'></i>
-                              </a>
-    
-                              &nbsp;
-                              |
+                             
                               <a href='SectionEdit.php?id=$row[SectionID]'>
                                 <i class='fa fa-edit blue'></i>
                               </a>
-                              |
-                              <a href='#' class='delete-confirm'><i class='fa fa-trash red'></i>
-                              </a>
+           
                             </td>
     
                           </tr>";

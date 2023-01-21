@@ -51,8 +51,9 @@ if (!isset($_SESSION["Username"])){
 
     </nav>
     <!-- /.navbar -->
- <!-- Main Sidebar Container -->
- <aside class="main-sidebar sidebar-dark-primary elevation-4">
+
+     <!-- Main Sidebar Container -->
+     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="Index.php" class="brand-link">
         <img src="Logos.png" alt=" Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -67,7 +68,7 @@ if (!isset($_SESSION["Username"])){
             <img src="./dist/img/avatar04.png" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="#" class="d-block"><?php echo $_SESSION['FullName']; ?> </a>
+            <a href="#" class="d-block"><?php echo $_SESSION['FullName']; ?>  </a>
           </div>
         </div>
 
@@ -408,20 +409,20 @@ if (!isset($_SESSION["Username"])){
  }
           
           ?>
-          
         </nav>
         <!-- /.sidebar-menu -->
       </div>
       <!-- /.sidebar -->
     </aside>
 
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
 
       <!-- <h4 style="display: inline"> كل </h4> -->
-      <a style="margin-right:30px" href="UserCreate.php" class="btn btn-success float-right">
+      <a style="margin-right:30px" href="OrderCreate.php" class="btn btn-success float-right">
         <i class="fa fa-newspaper-o"></i>
-        إنشــاء مستخدم</a>
+        إنشــاء طلب</a>
       <hr>
       <br>
 
@@ -432,54 +433,75 @@ if (!isset($_SESSION["Username"])){
               <!-- /.card-header -->
               <div class="card-body">
                 <div class="table-responsive">
+                    <h3> الطلبات قيد التنفيذ</h3>
                   <table class="table table-bordered" id="example1">
                     <thead>
                       <tr>
-                      <th scope="col">#</th>
-                        <th scope="col">إسم المستخدم</th>
-                        <th scope="col">الاسم كامل</th>
-                        <th scope="col">الكلية</th>
-                        <th scope="col">الطابق</th>
-                        <th scope="col">الغرفة</th>
-                        <th scope="col">رقم الجوال</th>
-                        <th scope="col">رقم الجوال </th>
-                        <th scope="col">نوع المستخدم</th>
-                        <th scope="col">البريد الالكتروني</th>
+                      <th scope="col"># </th>
+                        <th scope="col"> نوع البلاغ </th>
+                        <th scope="col">  الموظف</th>
+                        <th scope="col">الوصف</th>
+                        <th scope="col">المهندس</th>
+                        <th scope="col">الحالة</th>
+                        <th scope="col">تاريخ الطلب</th>
                         <th scope="col">العمليات</th>
-                        
                       </tr>
                     </thead>
                     <tbody>
+
                     <?php 
                     include('connect.php');
-                    $sql = "SELECT UserID,UserName,FullName,colleges.CollegeName, sections.SectionName ,floor,Room,PhoneNo,usertypes.UserTypeName,Email FROM users LEFT OUTER join colleges on users.CollegeID = colleges.CollegeID  LEFT OUTER join sections on users.SectionID = sections.SectionID LEFT OUTER join usertypes on users.UserTypeID = usertypes.UserTypeID ";
+                    $EngineerID = $_SESSION["Username"];
+                    if ($UserTypeID ==1){
+                    $sql = "SELECT `OrderID`, ot.OrderTypeName, u.FullName, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
+                     `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID
+                     where o.StatusID =2";
+                    }else {
+
+                      $sql = "SELECT `OrderID`, ot.OrderTypeName, u.FullName, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
+                      `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID
+                      where o.EngineerID  = '$EngineerID' and  o.StatusID =2";
+                    }
+
                     $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                           // output data of each row
                           while($row = $result->fetch_assoc()) {
                             echo "<tr>
-                            <td>". $row["UserID"]."</td>
-                            <td>". $row["UserName"]."</td>
+                            <td>". $row["OrderID"]."</td>
+                            <td>".$row["OrderTypeName"]."</td>
                             <td>".$row["FullName"]."</td>
-                            <td>".$row["CollegeName"]."</td>
-                            <td>".$row["SectionName"]."</td>
-                            <td>".$row["floor"]."</td>
-                            <td>".$row["Room"]."</td>
-                            <td>".$row["PhoneNo"]."</td>
-                            <td>".$row["UserTypeName"]."</td>
-                            <td>".$row["Email"]."</td>
-                            <td>
-                             
-                              <a href='UserEdit.php?id=$row[UserID]'>
+                            <td>".$row["Description"]."</td>
+                            <td>".$row["Engineer"]."</td>
+                            <td>".$row["OrderStatusName"]."</td>
+                            <td>".$row["RegisterDate"]."</td>
+                            ";
+
+                            if ($UserTypeID ==1){
+                              echo "<td>
+                              <a href='AssignOrders.php?id=$row[OrderID]'>
                                 <i class='fa fa-edit blue'></i>
                               </a>
-                          
-                            </td>
-    
-                          </tr>";
-
+                              
                             
+                            </td>";
+    
+                          
+                            }else{
+                              echo "<td>
+                              <a href='OrderEdit.php?id=$row[OrderID]'>
+                                <i class='fa fa-edit blue'></i>
+                              </a>
+                              
+                            
+                            </td>";
+
+                            }
+                            echo "</tr>";
+
                           }
+                        
+                          
                         } else {
                           
                         }
@@ -487,8 +509,8 @@ if (!isset($_SESSION["Username"])){
 
 
                       ?>
-                     
-
+                   
+                      
                     </tbody>
                   </table>
                 </div>
