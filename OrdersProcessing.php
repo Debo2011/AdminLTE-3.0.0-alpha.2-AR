@@ -453,12 +453,12 @@ if (!isset($_SESSION["Username"])){
                     include('connect.php');
                     $EngineerID = $_SESSION["Username"];
                     if ($UserTypeID ==1){
-                    $sql = "SELECT `OrderID`, ot.OrderTypeName, u.FullName, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
+                    $sql = "SELECT `OrderID`, ot.OrderTypeName, u.FullName, `Description`, e.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
                      `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID
                      where o.StatusID =3";
                     }else {
 
-                      $sql = "SELECT `OrderID`, ot.OrderTypeName, u.FullName, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
+                      $sql = "SELECT `OrderID`, ot.OrderTypeName, u.FullName, `Description`, e.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
                       `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID
                       where o.EngineerID  = '$EngineerID' and  o.StatusID =3";
                     }

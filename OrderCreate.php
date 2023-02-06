@@ -463,7 +463,7 @@ if (!isset($_SESSION["Username"])){
                                     </div>
                                     <div class="col-md-6">
                                     <div class="form-group">
-                                    <label for=""> الوصف  </label>
+                                    <label for=""> الشرح  </label>
                                     <textarea type="text" name="descriptions" id="descriptions" class="form-control"></textarea>
                                     <p class="red"></p>
                                     </div>
@@ -472,7 +472,7 @@ if (!isset($_SESSION["Username"])){
                                  </div>
                                  <button type="submit" class="btn btn-success">
                                      <i class="fa fa-save"></i>
-                                    حفظ
+                                    إرسال
                                 </button>
                                  </div>
                              </div>
@@ -494,6 +494,29 @@ include('connect.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
+
+  if (empty($_POST["OrderTypeID"])) {
+    echo "<script>Swal.fire(
+      'نوع الطلب مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  }else if(empty($_POST["descriptions"])) {
+    echo "<script>Swal.fire(
+      'الشرح مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+
+
+  }else{
+
+
+    $attachmentName =    basename($_FILES["attachments"]["name"]);
+if($attachmentName!=""){
+
+
+
   $target_dir = "uploads/";
 $target_file = $target_dir . basename($_FILES["attachments"]["name"]);
 $uploadOk = 1;
@@ -594,7 +617,7 @@ if ($uploadOk == 0) {
    // echo "Sorry, there was an error uploading your file.";
   }
 }
-
+  }
   $OrderTypeID = test_input($_POST["OrderTypeID"]);
   $descriptions = test_input($_POST["descriptions"]);
   $datenow = date("Y/m/d");
@@ -606,11 +629,14 @@ if ($uploadOk == 0) {
   if ($conn->query($sql) === TRUE) {
     $last_id = $conn->insert_id;
 
-    $sqlattachments = "INSERT INTO `attachments`( `attachmentName`, `attachmentURL`, `OrderID`, `UserID`) 
-    VALUES ('$attachments','$target_file','$last_id','$UserName')";
-  if ($conn->query($sqlattachments) === TRUE) {
+    if($attachments!=""){
+      $sqlattachments = "INSERT INTO `attachments`( `attachmentName`, `attachmentURL`, `OrderID`, `UserID`) 
+      VALUES ('$attachments','$target_file','$last_id','$UserName')";
+    if ($conn->query($sqlattachments) === TRUE) {
+  
+    }
+    }
 
-  }
 
   $sqlDesc = "INSERT INTO `descriptions`( `DescriptionName`, `UserID`, `OrderID`) 
   VALUES ('$descriptions',' $UserName','$last_id')";
@@ -631,6 +657,8 @@ if ($uploadOk == 0) {
   } 
 
 
+    
+}
 
 
 }

@@ -436,15 +436,17 @@ if (!isset($_SESSION["Username"])){
                     <thead>
                       <tr>
                       <th scope="col">#</th>
-                        <th scope="col">إسم المستخدم</th>
+                        <th scope="col">الرقم الوظيفي</th>
                         <th scope="col">الاسم كامل</th>
                         <th scope="col">الكلية</th>
+                        <th scope="col">القسم</th>
                         <th scope="col">الطابق</th>
                         <th scope="col">الغرفة</th>
                         <th scope="col">رقم الجوال</th>
-                        <th scope="col">رقم الجوال </th>
+         
                         <th scope="col">نوع المستخدم</th>
                         <th scope="col">البريد الالكتروني</th>
+                        <th scope="col">حالة الحساب</th>
                         <th scope="col">العمليات</th>
                         
                       </tr>
@@ -452,7 +454,7 @@ if (!isset($_SESSION["Username"])){
                     <tbody>
                     <?php 
                     include('connect.php');
-                    $sql = "SELECT UserID,UserName,FullName,colleges.CollegeName, sections.SectionName ,floor,Room,PhoneNo,usertypes.UserTypeName,Email FROM users LEFT OUTER join colleges on users.CollegeID = colleges.CollegeID  LEFT OUTER join sections on users.SectionID = sections.SectionID LEFT OUTER join usertypes on users.UserTypeID = usertypes.UserTypeID ";
+                    $sql = "SELECT UserID,UserName,FullName,colleges.CollegeName, sections.SectionName ,floor,Room,PhoneNo,usertypes.UserTypeName,Email,UserStatus.UserStatusName FROM users LEFT OUTER join colleges on users.CollegeID = colleges.CollegeID  LEFT OUTER join sections on users.SectionID = sections.SectionID LEFT OUTER join usertypes on users.UserTypeID = usertypes.UserTypeID LEFT OUTER join UserStatus on users.UserStatusID = UserStatus.UserStatusID";
                     $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                           // output data of each row
@@ -467,7 +469,10 @@ if (!isset($_SESSION["Username"])){
                             <td>".$row["Room"]."</td>
                             <td>".$row["PhoneNo"]."</td>
                             <td>".$row["UserTypeName"]."</td>
+                            
                             <td>".$row["Email"]."</td>
+                            <td>".$row["UserStatusName"]."</td>
+                            
                             <td>
                              
                               <a href='UserEdit.php?id=$row[UserID]'>

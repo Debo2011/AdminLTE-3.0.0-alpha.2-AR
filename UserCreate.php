@@ -426,7 +426,7 @@ if (!isset($_SESSION["Username"])){
                     $sqlsections = "select * from sections ";
                     $resultsections = $conn->query($sqlsections);
 
-                    $sqlUserTypes = "select * from UserTypes ";
+                    $sqlUserTypes = "select * from usertypes ";
                     $resultUserTypes = $conn->query($sqlUserTypes);
                   ?>
 
@@ -444,7 +444,7 @@ if (!isset($_SESSION["Username"])){
 
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="">اسم المستخدم</label>
+                          <label for="">الرقم الوظيفي</label>
                           <input type="text" name="UserName" id="UserName" class="form-control">
                           <p class="red"></p>
                         </div>
@@ -527,6 +527,7 @@ if (!isset($_SESSION["Username"])){
                           <p class="red"></p>
                         </div>
                        
+                     
                         <div class="form-group">
                           <label for="">نوع المستخدم</label>
                           <select name="UserTypeID" id="UserTypeID"  class="form-control">
@@ -580,6 +581,66 @@ include('connect.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
   
+
+  if (empty($_POST["PhoneNo"])) {
+    echo "<script>Swal.fire(
+      'رقم الجوال مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["UserName"])) {
+    echo "<script>Swal.fire(
+      'الرقم الوظيفي  مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["CollegeID"])) {
+    echo "<script>Swal.fire(
+      'حقل الكليه  مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["floor"])) {
+    echo "<script>Swal.fire(
+      'الطابق مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["FullName"])) {
+    echo "<script>Swal.fire(
+      ' اسم الكامل مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["SectionID"])) {
+    echo "<script>Swal.fire(
+      'حقل القسم  مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["Room"])) {
+    echo "<script>Swal.fire(
+      'حقل الغرفه مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["Email"])) {
+    echo "<script>Swal.fire(
+      'حقل البريد الالكتروني  مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  }else if (empty($_POST["UserTypeID"])) {
+    echo "<script>Swal.fire(
+      'حقل نوع المستخدم مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  }else{
+
+
+
+
   $PhoneNo = test_input($_POST["PhoneNo"]);
   $UserName = test_input($_POST["UserName"]);
   $CollegeID = test_input($_POST["CollegeID"]);
@@ -608,6 +669,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     ) </script>";
   }
 
+    
+}
 
 }
 

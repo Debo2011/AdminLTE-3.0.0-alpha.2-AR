@@ -421,7 +421,7 @@ if (!isset($_SESSION["Username"])){
   <?php 
                     include('connect.php');
                     $id = $_GET["id"];
-                    $sqlOrders  = "SELECT `OrderID`, ot.OrderTypeName, u.FullName,c.CollegeName , u.Room,u.PhoneNo,u.floor, `Description`, E.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
+                    $sqlOrders  = "SELECT `OrderID`, ot.OrderTypeName, u.FullName,c.CollegeName , u.Room,u.PhoneNo,u.floor, `Description`, e.FullName As Engineer, s.OrderStatusName, `RegisterDate` FROM
                     `orders` o LEFT OUTER join ordertypes ot on o.OrderTypeID = ot.OrderTypeID LEFT OUTER join users u on o.UserID = u.UserName LEFT OUTER join users e on o.EngineerID = e.UserName LEFT OUTER join orderstatues s on o.StatusID = s.OrderStatusID
                     left OUTER JOIN colleges c on u.CollegeID = c.CollegeID
                     WHERE OrderID = $id";
@@ -440,10 +440,25 @@ include('connect.php');
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
+  if (empty($_POST["UserName"])) {
+    echo "<script>Swal.fire(
+      'المهندس مطلوبة'  ,
+      '',
+      'error'
+    ) </script>";
+  }else if(empty($_POST["descriptions"])) {
+    echo "<script>Swal.fire(
+      'الشرح مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+
+
+  }else{
   $UserID = test_input($_SESSION["Username"]);
   $UserName = test_input($_POST["UserName"]);
   $descriptions = test_input($_POST["descriptions"]);
-  $sql = "update Orders set EngineerID = '$UserName' ,StatusID= 2, Description = '$descriptions'   where OrderID = $OrderID ";
+  $sql = "update orders set EngineerID = '$UserName' ,StatusID= 2, Description = '$descriptions'   where OrderID = $OrderID ";
   if ($conn->query($sql) === TRUE) {
 
     $sqlDesc = "INSERT INTO `descriptions`( `DescriptionName`, `UserID`, `OrderID`) 
@@ -465,7 +480,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     ) </script>";
   }
 
-
+  }
 }
 
 
@@ -632,7 +647,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                       <div class="row">
                   <div class="col-md-6">
                     <?php     include('connect.php');
-                    $sqlorderstatues  = "select * from Users where UserTypeID = 2";
+                    $sqlorderstatues  = "select * from users where UserTypeID = 2";
                     $resultorderstatues = $conn->query($sqlorderstatues);
 
 

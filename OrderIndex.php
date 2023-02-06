@@ -440,7 +440,7 @@ if (!isset($_SESSION["Username"])){
                       <th scope="col"># </th>
                         <th scope="col"> نوع البلاغ </th>
                         <th scope="col">  الموظف</th>
-                        <th scope="col">الوصف</th>
+                        <th scope="col">الشرح</th>
                         <th scope="col">المهندس</th>
                         <th scope="col">الحالة</th>
                         <th scope="col">تاريخ الطلب</th>

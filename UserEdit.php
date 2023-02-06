@@ -30,7 +30,7 @@ if (!isset($_SESSION["Username"])){
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
   <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body {
       font-family: 'Tajawal' !important;
@@ -67,7 +67,7 @@ if (!isset($_SESSION["Username"])){
             <img src="./dist/img/avatar04.png" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="#" class="d-block"><?php echo $_SESSION['FullName']; ?> </a>
+            <a href="#" class="d-block"><?php echo $_SESSION['FullName']; ?>  </a>
           </div>
         </div>
 
@@ -415,9 +415,153 @@ if (!isset($_SESSION["Username"])){
       <!-- /.sidebar -->
     </aside>
 
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
+    <?php
+include('connect.php');
+include('connect.php');
+$sqlColleges  = "select * from colleges ";
+$resultColleges = $conn->query($sqlColleges);
 
+$sqlsections = "select * from sections ";
+$resultsections = $conn->query($sqlsections);
+
+$sqlUserTypes = "select * from usertypes ";
+$resultUserTypes = $conn->query($sqlUserTypes);
+
+$sqlUserStatus = "select * from UserStatus ";
+$resultUserStatus = $conn->query($sqlUserStatus);
+
+$id = $_GET["id"];
+$sql = "select * from users where  UserID = $id";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+  // output data of each row
+  while($row = $result->fetch_assoc()) {
+$FullName = $row['FullName'];
+$UserID = $row['UserID'];
+$UserName = $row['UserName'];
+$CollegeID = $row['CollegeID'];
+$SectionID = $row['SectionID'];
+$floor = $row['floor'];
+$Room = $row['Room'];
+$PhoneNo = $row['PhoneNo'];
+$Email = $row['Email'];
+$UserTypeID1 = $row['UserTypeID'];
+$UserStatusID = $row['UserStatusID'];
+
+  }
+
+}
+
+
+?>
+    <?php 
+
+
+include('connect.php');
+
+ function test_input($data) {
+  
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") 
+{
+  if (empty($_POST["PhoneNo"])) {
+    echo "<script>Swal.fire(
+      'رقم الجوال مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["CollegeID"])) {
+    echo "<script>Swal.fire(
+      'حقل الكليه  مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["floor"])) {
+    echo "<script>Swal.fire(
+      'الطابق مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["FullName"])) {
+    echo "<script>Swal.fire(
+      ' اسم الكامل مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["SectionID"])) {
+    echo "<script>Swal.fire(
+      'حقل القسم  مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["Room"])) {
+    echo "<script>Swal.fire(
+      'حقل الغرفه مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  } else if (empty($_POST["Email"])) {
+    echo "<script>Swal.fire(
+      'حقل البريد الالكتروني  مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  }else if (empty($_POST["UserTypeID"])) {
+    echo "<script>Swal.fire(
+      'حقل نوع المستخدم مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  }else if (empty($_POST["UserStatusID"])) {
+    echo "<script>Swal.fire(
+      'حقل حالة الحساب مطلوب'  ,
+      '',
+      'error'
+    ) </script>";
+  }
+  else{
+
+    
+  $PhoneNo = test_input($_POST["PhoneNo"]);
+  $CollegeID = test_input($_POST["CollegeID"]);
+  $floor = test_input($_POST["floor"]);
+  $UserTypeID = test_input($_POST["UserTypeID"]);
+  $FullName = test_input($_POST["FullName"]);
+  $SectionID = test_input($_POST["SectionID"]);
+  $Room = test_input($_POST["Room"]);
+  $Email = test_input($_POST["Email"]);
+  $UserStatusID = test_input($_POST["UserStatusID"]);
+  
+  $sql = "UPDATE `users` SET `FullName`='$FullName',`CollegeID`=$CollegeID,`SectionID`=$SectionID,`floor`='$floor',`Room`='$Room',`PhoneNo`='$PhoneNo',`UserTypeID`='$UserTypeID',`Email`='$Email',UserStatusID=$UserStatusID WHERE UserID =$UserID";
+  if ($conn->query($sql) === TRUE) {
+    echo "<script>Swal.fire(
+      'تم الحفظ بنجاح',
+      '',
+      'success'
+    )</script>";
+  } else {
+    echo "<script>Swal.fire(
+      'لم يتم الحفظ,
+      '',
+      'error'
+    ) </script>";
+  }
+
+}
+}
+
+
+
+                  ?>
 
       <br>
 
@@ -427,59 +571,56 @@ if (!isset($_SESSION["Username"])){
             <div class="card">
               <div class="card-body">
                 <div class="card">
-                  <div class="card-header bg-info"> إضافة </div>
+                  <div class="card-header bg-info"> تعديل </div>
                   <div class="card-body">
                     <div class="row">
 
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="">اسم المستخدم</label>
-                          <input type="text" name="UserName" id="" class="form-control">
+                          <label for="">الرقم الوظيفي</label>
+                          <input type="text" readonly="readonly" name="UserName" value="<?php echo $UserName; ?>" id="UserName" class="form-control">
                           <p class="red"></p>
                         </div>
                      
                         <div class="form-group">
                           <label for="">الكلية</label>
-                          <select name="CollegeID" class="form-control">
-                            <option value="0">إختر الكلية</option>
-                            <option value="1"> </option>
-                            <option value="3"> </option>
-                            <option value="4"> </option>
-                            <option value="5"> </option>
+                         
+                          <select name="CollegeID" id="CollegeID" class="form-control">
+                          <option value="">إختر الكلية</option>
+                                        <?php
+                                        if ($resultColleges->num_rows > 0) {
+                                          while($row = $resultColleges->fetch_assoc()) {
+                                      
+                                        if($row["CollegeID"]==$CollegeID){
+                                          echo "<option value=".$row["CollegeID"]." selected>".$row["CollegeName"] ."</option>";
+
+                                        }else{
+                                          echo "<option value=".$row["CollegeID"]."> ".$row["CollegeName"] ."</option>";
+
+                                        }
+                                          }
+                                        }
+                                        ?>
+                            
+
                           </select>
                           <p class="red"></p>
                         </div>
 
                         <div class="form-group">
                           <label for="">الطابق</label>
-                          <select name="floor" class="form-control">
-                            <option value="0">إختر الطابق</option>
-                            <option value="1"> </option>
-                            <option value="3"> </option>
-                            <option value="4"> </option>
-                            <option value="5"> </option>
-                          </select>
+                          <input type="text" name="floor" value="<?php echo $floor; ?>" id="floor" class="form-control">
                           <p class="red"></p>
                         </div>
 
                         
+                      
                         <div class="form-group">
-                          <label for="">كلمة المرور</label>
-                          <input type="Password" name="Password" id="" class="form-control">
+                          <label for=""> رقم الجوال</label>
+                          <input type="PhoneNo" name="PhoneNo" value="<?php echo $PhoneNo; ?>" id="PhoneNo" class="form-control">
                           <p class="red"></p>
                         </div>
-
-                        <div class="form-group">
-                          <label for="">نوع المستخدم</label>
-                          <select name="floor" class="form-control">
-                            <option value="0">إختر نوع المستخدم</option>
-                            <option value="1"> </option>
-                            <option value="3"> </option>
-                            <option value="4"> </option>
-                            <option value="5"> </option>
-                          </select>
-                          <p class="red"></p>
-                        </div>
+                        
 
 
                       </div>
@@ -487,50 +628,108 @@ if (!isset($_SESSION["Username"])){
 
                         <div class="form-group">
                           <label for="">الاسم كامل </label>
-                          <input type="text" name="FullName" id="" class="form-control">
+                          <input type="text" name="FullName" id="FullName" value="<?php echo $FullName; ?>" class="form-control">
                           <p class="red"></p>
                         </div>
 
                         <div class="form-group">
                           <label for="">القسم</label>
-                          <select name="SectionID" class="form-control">
-                            <option value="0">إختر القسم</option>
-                            <option value="1"> </option>
-                            <option value="3"> </option>
-                            <option value="4"> </option>
-                            <option value="5"> </option>
+                          <select name="SectionID" id="SectionID" class="form-control">
+                            <option value="">إختر القسم</option>
+                            <?php
+                                        if ($resultsections->num_rows > 0) {
+                                          while($row = $resultsections->fetch_assoc()) {
+                                     
+                                        if($row["SectionID"]==$SectionID){
+                                          echo "<option value=".$row["SectionID"]." selected>".$row["SectionName"] ."</option>";
+                                        }else{
+                                     
+                                          echo "<option value=".$row["SectionID"].">".$row["SectionName"] ."</option>";
+                                        }
+                                          }
+                                        }
+                                        ?>
+                            
                           </select>
                           <p class="red"></p>
                         </div>
 
                         <div class="form-group">
                           <label for="">الغرفة</label>
-                          <select name="Room" class="form-control">
-                            <option value="0">إختر الغرفة</option>
-                            <option value="1"> </option>
-                            <option value="3"> </option>
-                            <option value="4"> </option>
-                            <option value="5"> </option>
-                          </select>
+                  
+                  <input type="text" name="Room"  value="<?php echo $Room; ?>" id="Room" class="form-control">
                           <p class="red"></p>
                         </div>
 
+         
                         <div class="form-group">
-                          <label for=""> تاكيد كلمة المرور </label>
-                          <input type="Password" name="RePassword" id="" class="form-control">
+                          <label for="">نوع المستخدم</label>
+                          <select name="UserTypeID" id="UserTypeID"  class="form-control">
+
+                          <option value="">إختر نوع المستخدم</option>
+                          <?php
+                                        if ($resultUserTypes->num_rows > 0) {
+                                          while($row = $resultUserTypes->fetch_assoc()) {
+                                     
+                                        if($row["UserTypeID"]==$UserTypeID1){
+                                         
+                                          echo "<option value=".$row["UserTypeID"]." selected >".$row["UserTypeName"] ."</option>";
+
+                                        }else{
+                                          echo "<option value=".$row["UserTypeID"].">".$row["UserTypeName"] ."</option>";
+
+                                         
+                                        }
+                                          }
+                                        }
+                                        ?>
+                            
+                     
+                          </select>
                           <p class="red"></p>
                         </div>
-                        
+                        </div>
+                        <div class="col-md-6">
+
                         <div class="form-group">
                           <label for="">  البريد الالكتروني </label>
-                          <input type="Email" name="Email" id="Email" class="form-control">
+                          <input type="Email" name="Email"  value="<?php echo $Email; ?>" id="Email" class="form-control">
                           <p class="red"></p>
                         </div>
-                       
-                      </div>
-                      <button type="submit" class="btn btn-success">
+                        </div>
+
+                        <div class="col-md-6">
+
+                        <div class="form-group">
+                          <label for="">حالة الحساب</label>
+                          <select name="UserStatusID" id="UserStatusID" class="form-control">
+                            <option value="">إختر حالة الحساب</option>
+                            <?php
+                                        if ($resultUserStatus->num_rows > 0) {
+                                          while($row = $resultUserStatus->fetch_assoc()) {
+                                        
+                                        if($row["UserStatusID"]==$UserStatusID){
+                                         
+                                     
+                                          echo "<option value=".$row["UserStatusID"]." selected >".$row["UserStatusName"] ."</option>";
+
+                                        }else{
+                                         
+                                          echo "<option value=".$row["UserStatusID"].">".$row["UserStatusName"] ."</option>";
+                                         
+                                        }
+                                          }
+                                        }
+                                        ?>
+                            
+                          </select>
+                          <p class="red"></p>
+                        </div>
+                        </div>
+                    
+                      <button type="submit" class="btn btn-primary">
                         <i class="fa fa-save"></i>
-                        تعديل
+                        حفـــظ
                       </button>
                     </div>
                   </div>
@@ -541,8 +740,7 @@ if (!isset($_SESSION["Username"])){
         </div>
       </div>
 
-
-
+      
 
 
       <script>

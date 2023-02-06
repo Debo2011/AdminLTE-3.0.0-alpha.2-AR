@@ -430,6 +430,7 @@ if (!isset($_SESSION["Username"])){
                     $row = $result->fetch_assoc();
                     $AssetID = $row['AssetID'];
                     $AssetName = $row['AssetName'];
+                    $AssetTypeID =$row['AssetTypeID'];
                     $AssetDec = $row['AssetDec'];
                       
                     
@@ -500,8 +501,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                                         <?php
                                         if ($resultAssetTypes->num_rows > 0) {
                                           while($row = $resultAssetTypes->fetch_assoc()) {
-                                        echo "<option value=".$row["AssetTypeID"].">".$row["AssetTypeName"] ."</option>";
-
+                                      
+                                        if($row["AssetTypeID"]==$AssetTypeID){
+                                         
+                                        
+                                          echo "<option value=".$row["AssetTypeID"]." selected>".$row["AssetTypeName"] ."</option>";
+                                        }else{
+                                          
+                                          echo "<option value=".$row["AssetTypeID"].">".$row["AssetTypeName"] ."</option>";
+                                         
+                                        }
                                           }
                                         }
                                         ?>

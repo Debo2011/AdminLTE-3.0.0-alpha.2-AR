@@ -9,6 +9,7 @@
     <link href="dist/css/bootstrap_ar.css" rel="stylesheet" />
     <link href="dist/css/login.css" rel="stylesheet" />
     <link rel="shortcut icon" href="~/assets/img/favicon.png">
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>بوابة الدخول</title>
 
 </head>
@@ -25,7 +26,7 @@
                     <img src="Logos.png" style="box-shadow: none; width: 132px; height: 93px;"
                         alt="Perfect Logo" class="elevation-3 mb-4"> <br>
                 </div>
-                <h4>بوابة الدخول</h4>
+                <h4>إدارة الشون الفنية</h4>
                 <div class="form-group">
                     <div class="col-md-12">
                         <input type="text" name="Username" class="form-control textfiled" id="Username" placeholder ="اسم المستخدم ">
@@ -63,7 +64,7 @@ function test_input($data) {
   {
     $Username = test_input($_POST["Username"]);
     $password = test_input($_POST["password"]);
-    $sql = "select * from users where UserName = "."'$Username' and Password = "."'$password'" ;
+    $sql = "select * from users where UserName = "."'$Username' and Password = "."'$password' and UserStatusID =1" ;
 
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -74,7 +75,11 @@ function test_input($data) {
         
         header('location:Index.php');
     }else{
-
+     echo "<script>Swal.fire(
+      ' الرجاء ادخل اسم المستخدم وكلمة المرور بشكل صحيح     '  ,
+      '',
+      'error'
+    ) </script>";
 
     }
   }

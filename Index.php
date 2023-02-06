@@ -37,6 +37,7 @@ if (!isset($_SESSION["Username"])){
     body {
       font-family: 'Tajawal' !important;
     }
+ 
   </style>
 
 </head>
@@ -169,7 +170,7 @@ if (!isset($_SESSION["Username"])){
                </a>
              </li>
 
-
+    
            </ul>
          </li>
          <li class='nav-item has-treeview '>
